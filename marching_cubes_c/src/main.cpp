@@ -9,7 +9,7 @@
 
 static void print_usage() {
     std::cout << "用法:\n"
-              << "  marching_cubes --input /path/vol.npy --iso 0.5 --vtk out.vtk\n\n"
+              << "  marching_cubes_c --input /path/vol.npy --iso 0.5 --vtk out.vtk\n\n"
               << "参数:\n"
               << "  --input <path>  输入NPY文件，形状(1,D,H,W)\n"
               << "  --iso <value>   等值（浮点数）\n"

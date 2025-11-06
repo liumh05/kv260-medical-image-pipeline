@@ -28,13 +28,13 @@ cmake -DCMAKE_BUILD_TYPE=Debug .. && cmake --build . -j
 
 ```bash
 # Basic usage
-./marching_cubes --input /path/to/volume.npy --iso 300.0 --vtk output.vtk
+./marching_cubes_c --input /path/to/volume.npy --iso 300.0 --vtk output.vtk
 
 # With statistics
-./marching_cubes --input volume.npy --iso 0.5 --vtk output.vtk --stats
+./marching_cubes_c --input volume.npy --iso 0.5 --vtk output.vtk --stats
 
 # Show help
-./marching_cubes --help
+./marching_cubes_c --help
 ```
 
 **Required arguments:**

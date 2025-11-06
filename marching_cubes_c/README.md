@@ -13,7 +13,7 @@ cmake --build . -j
 ## 运行
 
 ```bash
-./marching_cubes --input /path/to/ct.npy --iso 300.0 --vtk out.vtk
+./marching_cubes_c --input /path/to/ct.npy --iso 300.0 --vtk out.vtk
 ```
 
 参数说明：
