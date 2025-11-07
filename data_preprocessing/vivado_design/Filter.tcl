@@ -1,6 +1,6 @@
 
 ################################################################
-# This is a generated script based on design: ultra_inte
+# This is a generated script based on design: Filter
 #
 # Though there are limitations about the generated script,
 # the main purpose of this utility is to make learning
@@ -41,7 +41,7 @@ if { [string first $scripts_vivado_version $current_vivado_version] == -1 } {
 ################################################################
 
 # To test this script, run the following commands from Vivado Tcl console:
-# source ultra_inte_script.tcl
+# source Filter_script.tcl
 
 # If there is no project opened, this script will create a
 # project, but make sure you do not have an existing project
@@ -56,7 +56,7 @@ if { $list_projs eq "" } {
 
 # CHANGE DESIGN NAME HERE
 variable design_name
-set design_name ultra_inte
+set design_name Filter
 
 # If you do not already have an existing IP Integrator design open,
 # you can create a design using the following command:
@@ -130,10 +130,10 @@ set bCheckIPsPassed 1
 set bCheckIPs 1
 if { $bCheckIPs == 1 } {
    set list_check_ips "\ 
+xilinx.com:ip:zynq_ultra_ps_e:3.5\
 xilinx.com:hls:Filter2D_accel:1.0\
 xilinx.com:ip:axi_dma:7.1\
 xilinx.com:ip:axis_dwidth_converter:1.1\
-xilinx.com:ip:zynq_ultra_ps_e:3.5\
 xilinx.com:ip:smartconnect:1.0\
 xilinx.com:ip:proc_sys_reset:5.0\
 "
@@ -202,27 +202,6 @@ proc create_root_design { parentCell } {
 
   # Create ports
 
-  # Create instance: Filter2D_accel_0, and set properties
-  set Filter2D_accel_0 [ create_bd_cell -type ip -vlnv xilinx.com:hls:Filter2D_accel:1.0 Filter2D_accel_0 ]
-
-  # Create instance: axi_dma_0, and set properties
-  set axi_dma_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_dma:7.1 axi_dma_0 ]
-  set_property -dict [list \
-    CONFIG.c_include_sg {0} \
-    CONFIG.c_m_axi_mm2s_data_width {64} \
-    CONFIG.c_m_axi_s2mm_data_width {64} \
-    CONFIG.c_sg_length_width {26} \
-  ] $axi_dma_0
-
-
-  # Create instance: axis_dwidth_converter_0, and set properties
-  set axis_dwidth_converter_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:axis_dwidth_converter:1.1 axis_dwidth_converter_0 ]
-  set_property CONFIG.M_TDATA_NUM_BYTES {3} $axis_dwidth_converter_0
-
-
-  # Create instance: axis_dwidth_converter_1, and set properties
-  set axis_dwidth_converter_1 [ create_bd_cell -type ip -vlnv xilinx.com:ip:axis_dwidth_converter:1.1 axis_dwidth_converter_1 ]
-
   # Create instance: zynq_ultra_ps_e_0, and set properties
   set zynq_ultra_ps_e_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:zynq_ultra_ps_e:3.5 zynq_ultra_ps_e_0 ]
   set_property -dict [list \
@@ -240,6 +219,7 @@ proc create_root_design { parentCell } {
     CONFIG.PSU_MIO_11_DRIVE_STRENGTH {4} \
     CONFIG.PSU_MIO_11_SLEW {slow} \
     CONFIG.PSU_MIO_12_DRIVE_STRENGTH {4} \
+    CONFIG.PSU_MIO_12_INPUT_TYPE {cmos} \
     CONFIG.PSU_MIO_12_POLARITY {Default} \
     CONFIG.PSU_MIO_12_SLEW {slow} \
     CONFIG.PSU_MIO_13_DRIVE_STRENGTH {4} \
@@ -348,7 +328,6 @@ proc create_root_design { parentCell } {
     CONFIG.PSU_MIO_50_POLARITY {Default} \
     CONFIG.PSU_MIO_50_SLEW {slow} \
     CONFIG.PSU_MIO_51_DRIVE_STRENGTH {4} \
-    CONFIG.PSU_MIO_51_INPUT_TYPE {cmos} \
     CONFIG.PSU_MIO_51_POLARITY {Default} \
     CONFIG.PSU_MIO_51_SLEW {slow} \
     CONFIG.PSU_MIO_54_DRIVE_STRENGTH {4} \
@@ -390,6 +369,7 @@ proc create_root_design { parentCell } {
     CONFIG.PSU_MIO_77_DRIVE_STRENGTH {4} \
     CONFIG.PSU_MIO_77_SLEW {slow} \
     CONFIG.PSU_MIO_7_DRIVE_STRENGTH {4} \
+    CONFIG.PSU_MIO_7_INPUT_TYPE {cmos} \
     CONFIG.PSU_MIO_7_POLARITY {Default} \
     CONFIG.PSU_MIO_7_SLEW {slow} \
     CONFIG.PSU_MIO_8_DRIVE_STRENGTH {4} \
@@ -542,9 +522,10 @@ MIO#GPIO1 MIO#GPIO1 MIO#GPIO1 MIO#GPIO1 MIO#GPIO1 MIO#GPIO1 MIO#GPIO1 MIO#GPIO1 
     CONFIG.PSU__IOU_SLCR__WDT0__ACT_FREQMHZ {99.999001} \
     CONFIG.PSU__LPD_SLCR__CSUPMU__ACT_FREQMHZ {100.000000} \
     CONFIG.PSU__MAXIGP0__DATA_WIDTH {128} \
+    CONFIG.PSU__MAXIGP1__DATA_WIDTH {128} \
     CONFIG.PSU__OVERRIDE__BASIC_CLOCK {0} \
     CONFIG.PSU__PL_CLK0_BUF {TRUE} \
-    CONFIG.PSU__PL_CLK1_BUF {FALSE} \
+    CONFIG.PSU__PL_CLK1_BUF {TRUE} \
     CONFIG.PSU__PMU_COHERENCY {0} \
     CONFIG.PSU__PMU__AIBACK__ENABLE {0} \
     CONFIG.PSU__PMU__EMIO_GPI__ENABLE {0} \
@@ -608,16 +589,44 @@ Port;FD4A0000;FD4AFFFF;0|FPD;DPDMA;FD4C0000;FD4CFFFF;0|FPD;DDR_XMPU5_CFG;FD05000
     CONFIG.PSU__TTC3__WAVEOUT__ENABLE {0} \
     CONFIG.PSU__USE__IRQ0 {1} \
     CONFIG.PSU__USE__M_AXI_GP0 {1} \
-    CONFIG.PSU__USE__M_AXI_GP1 {0} \
+    CONFIG.PSU__USE__M_AXI_GP1 {1} \
     CONFIG.PSU__USE__M_AXI_GP2 {0} \
     CONFIG.PSU__USE__S_AXI_GP2 {1} \
     CONFIG.PSU__USE__S_AXI_GP3 {1} \
   ] $zynq_ultra_ps_e_0
 
 
+  # Create instance: Filter2D_accel_0, and set properties
+  set Filter2D_accel_0 [ create_bd_cell -type ip -vlnv xilinx.com:hls:Filter2D_accel:1.0 Filter2D_accel_0 ]
+
+  # Create instance: axi_dma_0, and set properties
+  set axi_dma_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_dma:7.1 axi_dma_0 ]
+  set_property -dict [list \
+    CONFIG.c_include_sg {0} \
+    CONFIG.c_m_axi_s2mm_data_width {128} \
+    CONFIG.c_m_axis_mm2s_tdata_width {128} \
+    CONFIG.c_mm2s_burst_size {16} \
+    CONFIG.c_s_axis_s2mm_tdata_width {128} \
+    CONFIG.c_sg_length_width {26} \
+  ] $axi_dma_0
+
+
+  # Create instance: axis_dwidth_converter_0, and set properties
+  set axis_dwidth_converter_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:axis_dwidth_converter:1.1 axis_dwidth_converter_0 ]
+  set_property CONFIG.M_TDATA_NUM_BYTES {16} $axis_dwidth_converter_0
+
+
+  # Create instance: axis_dwidth_converter_1, and set properties
+  set axis_dwidth_converter_1 [ create_bd_cell -type ip -vlnv xilinx.com:ip:axis_dwidth_converter:1.1 axis_dwidth_converter_1 ]
+  set_property CONFIG.M_TDATA_NUM_BYTES {12} $axis_dwidth_converter_1
+
+
   # Create instance: axi_smc, and set properties
   set axi_smc [ create_bd_cell -type ip -vlnv xilinx.com:ip:smartconnect:1.0 axi_smc ]
-  set_property CONFIG.NUM_SI {1} $axi_smc
+  set_property -dict [list \
+    CONFIG.NUM_MI {2} \
+    CONFIG.NUM_SI {2} \
+  ] $axi_smc
 
 
   # Create instance: rst_ps8_0_99M, and set properties
@@ -630,58 +639,57 @@ Port;FD4A0000;FD4AFFFF;0|FPD;DPDMA;FD4C0000;FD4CFFFF;0|FPD;DDR_XMPU5_CFG;FD05000
 
   # Create instance: axi_smc_2, and set properties
   set axi_smc_2 [ create_bd_cell -type ip -vlnv xilinx.com:ip:smartconnect:1.0 axi_smc_2 ]
-  set_property -dict [list \
-    CONFIG.NUM_MI {2} \
-    CONFIG.NUM_SI {1} \
-  ] $axi_smc_2
+  set_property CONFIG.NUM_SI {1} $axi_smc_2
 
 
   # Create interface connections
-  connect_bd_intf_net -intf_net Filter2D_accel_0_dst [get_bd_intf_pins Filter2D_accel_0/dst] [get_bd_intf_pins axis_dwidth_converter_1/S_AXIS]
-  connect_bd_intf_net -intf_net axi_dma_0_M_AXIS_MM2S [get_bd_intf_pins axis_dwidth_converter_0/S_AXIS] [get_bd_intf_pins axi_dma_0/M_AXIS_MM2S]
-  connect_bd_intf_net -intf_net axi_dma_0_M_AXI_MM2S [get_bd_intf_pins axi_dma_0/M_AXI_MM2S] [get_bd_intf_pins axi_smc/S00_AXI]
-  connect_bd_intf_net -intf_net axi_dma_0_M_AXI_S2MM [get_bd_intf_pins axi_dma_0/M_AXI_S2MM] [get_bd_intf_pins axi_smc_1/S00_AXI]
-  connect_bd_intf_net -intf_net axi_smc_1_M00_AXI [get_bd_intf_pins axi_smc_1/M00_AXI] [get_bd_intf_pins zynq_ultra_ps_e_0/S_AXI_HP1_FPD]
-  connect_bd_intf_net -intf_net axi_smc_2_M00_AXI [get_bd_intf_pins axi_smc_2/M00_AXI] [get_bd_intf_pins axi_dma_0/S_AXI_LITE]
-  connect_bd_intf_net -intf_net axi_smc_2_M01_AXI [get_bd_intf_pins axi_smc_2/M01_AXI] [get_bd_intf_pins Filter2D_accel_0/s_axi_control]
-  connect_bd_intf_net -intf_net axi_smc_M00_AXI [get_bd_intf_pins axi_smc/M00_AXI] [get_bd_intf_pins zynq_ultra_ps_e_0/S_AXI_HP0_FPD]
-  connect_bd_intf_net -intf_net axis_dwidth_converter_0_M_AXIS [get_bd_intf_pins axis_dwidth_converter_0/M_AXIS] [get_bd_intf_pins Filter2D_accel_0/src]
-  connect_bd_intf_net -intf_net axis_dwidth_converter_1_M_AXIS [get_bd_intf_pins axis_dwidth_converter_1/M_AXIS] [get_bd_intf_pins axi_dma_0/S_AXIS_S2MM]
-  connect_bd_intf_net -intf_net zynq_ultra_ps_e_0_M_AXI_HPM0_FPD [get_bd_intf_pins zynq_ultra_ps_e_0/M_AXI_HPM0_FPD] [get_bd_intf_pins axi_smc_2/S00_AXI]
+  connect_bd_intf_net -intf_net Filter2D_accel_0_dst [get_bd_intf_pins Filter2D_accel_0/dst] [get_bd_intf_pins axis_dwidth_converter_0/S_AXIS]
+  connect_bd_intf_net -intf_net axi_dma_0_M_AXIS_MM2S [get_bd_intf_pins axi_dma_0/M_AXIS_MM2S] [get_bd_intf_pins axis_dwidth_converter_1/S_AXIS]
+  connect_bd_intf_net -intf_net axi_dma_0_M_AXI_MM2S [get_bd_intf_pins axi_dma_0/M_AXI_MM2S] [get_bd_intf_pins axi_smc_1/S00_AXI]
+  connect_bd_intf_net -intf_net axi_dma_0_M_AXI_S2MM [get_bd_intf_pins axi_dma_0/M_AXI_S2MM] [get_bd_intf_pins axi_smc_2/S00_AXI]
+  connect_bd_intf_net -intf_net axi_smc_1_M00_AXI [get_bd_intf_pins axi_smc_1/M00_AXI] [get_bd_intf_pins zynq_ultra_ps_e_0/S_AXI_HP0_FPD]
+  connect_bd_intf_net -intf_net axi_smc_2_M00_AXI [get_bd_intf_pins axi_smc_2/M00_AXI] [get_bd_intf_pins zynq_ultra_ps_e_0/S_AXI_HP1_FPD]
+  connect_bd_intf_net -intf_net axi_smc_M00_AXI [get_bd_intf_pins axi_smc/M00_AXI] [get_bd_intf_pins axi_dma_0/S_AXI_LITE]
+  connect_bd_intf_net -intf_net axi_smc_M01_AXI [get_bd_intf_pins axi_smc/M01_AXI] [get_bd_intf_pins Filter2D_accel_0/s_axi_control]
+  connect_bd_intf_net -intf_net axis_dwidth_converter_0_M_AXIS [get_bd_intf_pins axis_dwidth_converter_0/M_AXIS] [get_bd_intf_pins axi_dma_0/S_AXIS_S2MM]
+  connect_bd_intf_net -intf_net axis_dwidth_converter_1_M_AXIS [get_bd_intf_pins axis_dwidth_converter_1/M_AXIS] [get_bd_intf_pins Filter2D_accel_0/src]
+  connect_bd_intf_net -intf_net zynq_ultra_ps_e_0_M_AXI_HPM0_FPD [get_bd_intf_pins zynq_ultra_ps_e_0/M_AXI_HPM0_FPD] [get_bd_intf_pins axi_smc/S00_AXI]
+  connect_bd_intf_net -intf_net zynq_ultra_ps_e_0_M_AXI_HPM1_FPD [get_bd_intf_pins zynq_ultra_ps_e_0/M_AXI_HPM1_FPD] [get_bd_intf_pins axi_smc/S01_AXI]
 
   # Create port connections
   connect_bd_net -net rst_ps8_0_99M_peripheral_aresetn  [get_bd_pins rst_ps8_0_99M/peripheral_aresetn] \
-  [get_bd_pins axi_smc/aresetn] \
-  [get_bd_pins axi_smc_1/aresetn] \
-  [get_bd_pins axis_dwidth_converter_0/aresetn] \
   [get_bd_pins axi_dma_0/axi_resetn] \
-  [get_bd_pins axi_smc_2/aresetn] \
+  [get_bd_pins axi_smc/aresetn] \
+  [get_bd_pins axis_dwidth_converter_0/aresetn] \
+  [get_bd_pins Filter2D_accel_0/ap_rst_n] \
   [get_bd_pins axis_dwidth_converter_1/aresetn] \
-  [get_bd_pins Filter2D_accel_0/ap_rst_n]
+  [get_bd_pins axi_smc_1/aresetn] \
+  [get_bd_pins axi_smc_2/aresetn]
   connect_bd_net -net zynq_ultra_ps_e_0_pl_clk0  [get_bd_pins zynq_ultra_ps_e_0/pl_clk0] \
-  [get_bd_pins axi_dma_0/m_axi_mm2s_aclk] \
-  [get_bd_pins axi_smc/aclk] \
-  [get_bd_pins zynq_ultra_ps_e_0/saxihp0_fpd_aclk] \
-  [get_bd_pins rst_ps8_0_99M/slowest_sync_clk] \
-  [get_bd_pins axi_dma_0/m_axi_s2mm_aclk] \
-  [get_bd_pins axi_smc_1/aclk] \
-  [get_bd_pins zynq_ultra_ps_e_0/saxihp1_fpd_aclk] \
-  [get_bd_pins axis_dwidth_converter_0/aclk] \
   [get_bd_pins zynq_ultra_ps_e_0/maxihpm0_fpd_aclk] \
-  [get_bd_pins axi_smc_2/aclk] \
+  [get_bd_pins axi_smc/aclk] \
   [get_bd_pins axi_dma_0/s_axi_lite_aclk] \
+  [get_bd_pins rst_ps8_0_99M/slowest_sync_clk] \
+  [get_bd_pins axis_dwidth_converter_0/aclk] \
+  [get_bd_pins Filter2D_accel_0/ap_clk] \
+  [get_bd_pins axi_dma_0/m_axi_s2mm_aclk] \
   [get_bd_pins axis_dwidth_converter_1/aclk] \
-  [get_bd_pins Filter2D_accel_0/ap_clk]
+  [get_bd_pins axi_dma_0/m_axi_mm2s_aclk] \
+  [get_bd_pins axi_smc_1/aclk] \
+  [get_bd_pins zynq_ultra_ps_e_0/saxihp0_fpd_aclk] \
+  [get_bd_pins axi_smc_2/aclk] \
+  [get_bd_pins zynq_ultra_ps_e_0/saxihp1_fpd_aclk] \
+  [get_bd_pins zynq_ultra_ps_e_0/maxihpm1_fpd_aclk]
   connect_bd_net -net zynq_ultra_ps_e_0_pl_resetn0  [get_bd_pins zynq_ultra_ps_e_0/pl_resetn0] \
   [get_bd_pins rst_ps8_0_99M/ext_reset_in]
 
   # Create address segments
+  assign_bd_address -offset 0xA0010000 -range 0x00010000 -target_address_space [get_bd_addr_spaces zynq_ultra_ps_e_0/Data] [get_bd_addr_segs Filter2D_accel_0/s_axi_control/Reg] -force
+  assign_bd_address -offset 0xA0000000 -range 0x00010000 -target_address_space [get_bd_addr_spaces zynq_ultra_ps_e_0/Data] [get_bd_addr_segs axi_dma_0/S_AXI_LITE/Reg] -force
   assign_bd_address -offset 0x00000000 -range 0x80000000 -target_address_space [get_bd_addr_spaces axi_dma_0/Data_MM2S] [get_bd_addr_segs zynq_ultra_ps_e_0/SAXIGP2/HP0_DDR_LOW] -force
   assign_bd_address -offset 0xC0000000 -range 0x20000000 -target_address_space [get_bd_addr_spaces axi_dma_0/Data_MM2S] [get_bd_addr_segs zynq_ultra_ps_e_0/SAXIGP2/HP0_QSPI] -force
   assign_bd_address -offset 0x00000000 -range 0x80000000 -target_address_space [get_bd_addr_spaces axi_dma_0/Data_S2MM] [get_bd_addr_segs zynq_ultra_ps_e_0/SAXIGP3/HP1_DDR_LOW] -force
   assign_bd_address -offset 0xC0000000 -range 0x20000000 -target_address_space [get_bd_addr_spaces axi_dma_0/Data_S2MM] [get_bd_addr_segs zynq_ultra_ps_e_0/SAXIGP3/HP1_QSPI] -force
-  assign_bd_address -offset 0xA0010000 -range 0x00010000 -target_address_space [get_bd_addr_spaces zynq_ultra_ps_e_0/Data] [get_bd_addr_segs Filter2D_accel_0/s_axi_control/Reg] -force
-  assign_bd_address -offset 0xA0000000 -range 0x00010000 -target_address_space [get_bd_addr_spaces zynq_ultra_ps_e_0/Data] [get_bd_addr_segs axi_dma_0/S_AXI_LITE/Reg] -force
 
   # Exclude Address Segments
   exclude_bd_addr_seg -target_address_space [get_bd_addr_spaces axi_dma_0/Data_MM2S] [get_bd_addr_segs zynq_ultra_ps_e_0/SAXIGP2/HP0_DDR_HIGH]

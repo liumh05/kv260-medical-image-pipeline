@@ -12,7 +12,7 @@ data_preprocessing/
 ├── hls_testbench/
 │   └── Filter2D_tb.cpp        # C++仿真测试代码
 └── vivado_design/
-    └── ultra.tcl              # Block Design Tcl脚本
+    └── Filter.tcl              # Block Design Tcl脚本
 ```
 
 ## 功能说明
