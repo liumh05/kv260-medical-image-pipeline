@@ -1,8 +1,8 @@
-# PyTorch UNet CHAOS-CT 医学图像分割项目
+# PyTorch UNet CHAOS-CT 医学图像分割模块
 
 ## 项目简介
 
-这是一个基于PyTorch的2D-UNet轻量级网络实现。项目提供从训练到量化的完整流程，支持Vitis AI部署。
+这是一个基于PyTorch的2D-UNet轻量级网络实现。模块提供从训练到量化的完整流程，支持Vitis AI部署。
 
 ## 目录结构
 
@@ -50,7 +50,7 @@ code2/
 - Python 3.6+
 - PyTorch 1.7.1+
 - CUDA (推荐)
-- Vitis AI (可选，用于量化)
+- Vitis AI
 
 ### 安装依赖
 ```bash
@@ -192,4 +192,3 @@ bash run_inference.sh
 - 训练前检查CUDA是否可用
 - 量化需要Vitis AI环境 (`conda activate vitis-ai-pytorch`)
 - 推理时确保模型文件存在
-- 推荐使用PyTorch 1.7.1版本
