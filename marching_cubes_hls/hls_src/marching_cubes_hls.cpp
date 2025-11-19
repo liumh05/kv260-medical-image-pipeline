@@ -102,7 +102,7 @@ void load_z_plane(const data_t* volume, int nx, int ny, int nz, int z,
     }
 }
 
-// 主函数 - Streaming版本
+// 主函数
 void marching_cubes_hls(
     const data_t* volume,
     int nx, int ny, int nz,
@@ -135,8 +135,7 @@ void marching_cubes_hls(
     int v_count = 0;
     int t_count = 0;
 
-    // *** 修改：(BUG 修复) 确定实际的处理边界 ***
-    // *** 确保循环不会超过缓存大小 (MAX_DIM) ***
+    //确保循环不会超过缓存大小
     int const x_bound = (nx > MAX_DIM) ? MAX_DIM : nx;
     int const y_bound = (ny > MAX_DIM) ? MAX_DIM : ny;
     int const z_bound = (nz > MAX_DIM) ? MAX_DIM : nz;
@@ -145,7 +144,6 @@ void marching_cubes_hls(
     load_z_plane(volume, nx, ny, nz, 0, z_plane_cache[0]);
     
     // 遍历所有立方体
-    // *** 修改：使用 z_bound ***
     Z_LOOP: for (int z = 0; z < z_bound - 1; z++) {
         #pragma HLS loop_tripcount min=1 max=127 avg=64
         
@@ -153,13 +151,11 @@ void marching_cubes_hls(
         int next_z = z + 1;
         int cache_idx = next_z & 1;
         load_z_plane(volume, nx, ny, nz, next_z, z_plane_cache[cache_idx]);
-        
-        // *** 修改：使用 y_bound ***
+
         Y_LOOP: for (int y = 0; y < y_bound - 1; y++) {
             #pragma HLS loop_tripcount min=1 max=127 avg=64
-            // *** 修改：使用 x_bound ***
+
             X_LOOP: for (int x = 0; x < x_bound - 1; x++) {
-                // *** 注意：II=12 仍然是一个潜在瓶颈，但 UNROLL 应该会有所帮助 ***
                 #pragma HLS PIPELINE II=12
                 #pragma HLS loop_tripcount min=1 max=127 avg=64
                 
@@ -220,7 +216,6 @@ void marching_cubes_hls(
                 
                 // 生成三角形
                 TRI_GEN: for (int i = 0; i < 15; i += 3) {
-                    // *** 修改：(性能优化) 展开此循环 ***
                     #pragma HLS UNROLL
                     #pragma HLS loop_tripcount min=0 max=5 avg=2
                     

@@ -6,8 +6,6 @@ CT图像肝脏分割推理脚本
 
 使用方法:
     python inference.py --model_path ../float/ChaosCT_0.9770885167.pth --test_dir ../data/Chaos/Test_Sets/CT --output_dir ./results
-
-作者: Claude Code
 """
 
 import os
